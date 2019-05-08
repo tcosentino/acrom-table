@@ -63,11 +63,12 @@ const getTimeagoCell = (column, cell) => ({
   width: 225,
   Cell: cellFactory(r => {
     const momentDate = moment(r.value);
-    const today = moment().diff(momentDate, "days") >= 1;
+    const notToday = moment().diff(momentDate, "days") >= 1;
+    const notThisYear = moment().diff(momentDate, "years") >= 1;
     let text = "";
 
-    text += today
-      ? momentDate.format("MMMM D [at] h:mm A")
+    text += notToday
+      ? momentDate.format(`MMMM D${notThisYear ? ",  YYYY" : ""} [at] h:mm A`)
       : momentDate.format("h:mm A");
 
     return <span>{text}</span>;
@@ -113,7 +114,6 @@ const getCheckboxCell = (column, cell) => ({
   sortable: false,
   filterable: false,
   Cell: cellFactory(r => {
-    console.log({ r });
     return (
       <input
         type="checkbox"

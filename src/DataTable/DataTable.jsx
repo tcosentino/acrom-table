@@ -86,6 +86,38 @@ class DataTable extends Component {
     });
   };
 
+  getSelectableColumn() {
+    const { selectAll } = this.state;
+    return {
+      id: "checkbox",
+      accessor: "",
+      sortable: false,
+      filterable: false,
+      Cell: ({ original }) => (
+        <input
+          type="checkbox"
+          className="checkbox"
+          checked={this.isRowSelected(original)}
+          onChange={() => this.toggleRow(original)}
+        />
+      ),
+      Header: () => (
+        <input
+          type="checkbox"
+          className="checkbox"
+          checked={selectAll === 1}
+          ref={input => {
+            if (input) {
+              input.indeterminate = selectAll === 2;
+            }
+          }}
+          onChange={() => this.toggleSelectAll()}
+        />
+      ),
+      width: 45
+    };
+  }
+
   getColumns() {
     const { columns, selectable } = this.props;
     const { selectAll } = this.state;
@@ -94,34 +126,7 @@ class DataTable extends Component {
     console.log({ selectAll });
 
     if (selectable) {
-      returnColumns.push({
-        id: "checkbox",
-        accessor: "",
-        sortable: false,
-        filterable: false,
-        Cell: ({ original }) => (
-          <input
-            type="checkbox"
-            className="checkbox"
-            checked={this.isRowSelected(original)}
-            onChange={() => this.toggleRow(original)}
-          />
-        ),
-        Header: () => (
-          <input
-            type="checkbox"
-            className="checkbox"
-            checked={selectAll === 1}
-            ref={input => {
-              if (input) {
-                input.indeterminate = selectAll === 2;
-              }
-            }}
-            onChange={() => this.toggleSelectAll()}
-          />
-        ),
-        width: 45
-      });
+      returnColumns.push(this.getSelectableColumn());
     }
 
     returnColumns.push(
@@ -135,6 +140,7 @@ class DataTable extends Component {
             return getPercentCell(column, cell);
           case "checkbox":
             return getCheckboxCell(column, cell);
+          case "date":
           case "timeago":
             return getTimeagoCell(column, cell);
           default:
