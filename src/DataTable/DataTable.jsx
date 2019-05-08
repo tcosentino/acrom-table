@@ -28,16 +28,17 @@ class DataTable extends Component {
   static Column = Column;
 
   state = {
-    selectAll: false,
+    // 0: none, 1: all, 2: some
+    selectAll: 0,
     // toggled list because when select all is enabled, it is the unselected rows
     toggledList: []
   };
 
-  getIdValue(original) {
+  getIdValue = original => {
     const { idAttribute } = this.props;
 
     return original[idAttribute];
-  }
+  };
 
   isRowSelected = original => {
     const { toggledList } = this.state;
@@ -49,22 +50,48 @@ class DataTable extends Component {
   };
 
   toggleRow = original => {
+    const { data } = this.props;
     const { toggledList } = this.state;
     const idValue = this.getIdValue(original);
+    let newToggledList = [];
+    let newSelectAll = 0;
 
     if (this.isRowSelected(original)) {
-      this.setState({
-        toggledList: [...reject(toggledList, s => s === idValue)]
-      });
+      newToggledList = [...reject(toggledList, s => s === idValue)];
     } else {
-      this.setState({ toggledList: [...toggledList, idValue] });
+      newToggledList = [...toggledList, idValue];
     }
+
+    if (newToggledList.length === data.length) {
+      newSelectAll = 1;
+    } else if (newToggledList.length > 0) {
+      newSelectAll = 2;
+    }
+
+    this.setState({
+      toggledList: newToggledList,
+      selectAll: newSelectAll
+    });
+  };
+
+  toggleSelectAll = () => {
+    const { data } = this.props;
+    const { selectAll } = this.state;
+    console.log({ data, selectAll });
+    const newToggledList = selectAll === 1 ? [] : data.map(this.getIdValue);
+
+    this.setState({
+      selectAll: selectAll === 1 ? 0 : 1,
+      toggledList: newToggledList
+    });
   };
 
   getColumns() {
     const { columns, selectable } = this.props;
     const { selectAll, toggledList } = this.state;
     const returnColumns = [];
+
+    console.log({ selectAll });
 
     if (selectable) {
       returnColumns.push({
