@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import moment from "moment";
 import isString from "lodash/isString";
 import ReactJson from "react-json-view";
@@ -12,14 +12,24 @@ const getCellBase = column => ({
   width: column.width || 150
 });
 
+const cellFactory = func => {
+  return r => {
+    if (!r || !r.value) {
+      return "";
+    }
+
+    return func(r);
+  };
+};
+
 const getLabelCell = (column, cell) => ({
   ...cell,
-  Cell: r => r.value
+  Cell: cellFactory(r => r.value.toString())
 });
 
 const getJsonCell = (column, cell) => ({
   ...cell,
-  Cell: r => {
+  Cell: cellFactory(r => {
     let obj = null;
     try {
       obj = isString(r.value) ? JSON.parse(r.value) : r.value;
@@ -33,25 +43,25 @@ const getJsonCell = (column, cell) => ({
         </div>
       )
     );
-  }
+  })
 });
 
 const getPercentCell = (column, cell) => ({
   ...cell,
-  Cell: r => (
+  Cell: cellFactory(r => (
     <div style={{ minWidth: "150px" }}>
       <ProgressBar
         now={r.value * 100}
         label={`${Math.floor(r.value * 100)}%`}
       />
     </div>
-  )
+  ))
 });
 
 const getTimeagoCell = (column, cell) => ({
   ...cell,
   width: 225,
-  Cell: r => {
+  Cell: cellFactory(r => {
     const momentDate = moment(r.value);
     const today = moment().diff(momentDate, "days") >= 1;
     let text = "";
@@ -61,7 +71,7 @@ const getTimeagoCell = (column, cell) => ({
       : momentDate.format("h:mm A");
 
     return <span>{text}</span>;
-  },
+  }),
   Filter: ({
     filter = {
       id: "birthday",
@@ -102,7 +112,7 @@ const getCheckboxCell = (column, cell) => ({
   ...cell,
   sortable: false,
   filterable: false,
-  Cell: r => {
+  Cell: cellFactory(r => {
     console.log({ r });
     return (
       <input
@@ -112,7 +122,7 @@ const getCheckboxCell = (column, cell) => ({
         readOnly
       />
     );
-  },
+  }),
   width: 45
 });
 

@@ -88,7 +88,7 @@ class DataTable extends Component {
 
   getColumns() {
     const { columns, selectable } = this.props;
-    const { selectAll, toggledList } = this.state;
+    const { selectAll } = this.state;
     const returnColumns = [];
 
     console.log({ selectAll });
