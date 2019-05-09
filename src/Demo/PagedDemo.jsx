@@ -6,6 +6,7 @@ export default () => {
   return (
     <PagedDataTable
       selectable
+      filterable
       idAttribute="id"
       columns={[
         { key: "id" },

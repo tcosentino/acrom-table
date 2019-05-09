@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import reject from "lodash/reject";
 import ReactTable from "react-table";
+import { Icon } from "acromyrmex";
+import { Button } from "react-bootstrap";
 import "react-table/react-table.css";
 import {
   getLabelCell,
@@ -11,27 +13,14 @@ import {
   getCellBase
 } from "./DataTableCells";
 
-class Cells extends Component {
-  render() {
-    return "a cell";
-  }
-}
-
-class Column extends Component {
-  render() {
-    return "a cell";
-  }
-}
-
 class DataTable extends Component {
-  static Cells = Cells;
-  static Column = Column;
-
   state = {
     // 0: none, 1: all, 2: some
     selectAll: 0,
     // toggled list because when select all is enabled, it is the unselected rows
-    toggledList: []
+    toggledList: [],
+
+    showFilters: false
   };
 
   getIdValue = original => {
@@ -153,12 +142,41 @@ class DataTable extends Component {
   }
 
   render() {
+    const { filterable, toolbar } = this.props;
+    const { toggledList, showFilters } = this.state;
+
     return (
-      <ReactTable
-        data={this.props.data}
-        columns={this.getColumns()}
-        className="-striped -highlight"
-      />
+      <div style={{ height: "100%" }}>
+        <div className="toolbar clearfix">
+          <div className="pull-right">
+            <strong>{`${toggledList.length} Selected`}</strong>
+          </div>
+          {filterable && (
+            <div className="pull-left">
+              <Button
+                bsStyle="primary"
+                bsSize="xs"
+                active={showFilters}
+                onClick={() => this.setState({ showFilters: !showFilters })}
+              >
+                <Icon filter />
+                {" Filter"}
+              </Button>
+            </div>
+          )}
+          {toolbar}
+        </div>
+        <ReactTable
+          className="-striped -highlight"
+          style={{
+            // 30px is the height of the toolbar
+            height: "calc(100% - 30px)"
+          }}
+          data={this.props.data}
+          columns={this.getColumns()}
+          filterable={showFilters}
+        />
+      </div>
     );
   }
 }
