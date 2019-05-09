@@ -5,6 +5,7 @@ import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@reach/tabs";
 import "./styles.css";
 import BasicDemo from "./Demo/BasicDemo";
 import AutoDemo from "./Demo/AutoDemo";
+import PagedDemo from "./Demo/PagedDemo";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <TabList>
           <Tab>Basic</Tab>
           <Tab>Auto</Tab>
+          <Tab>Paged</Tab>
         </TabList>
 
         <TabPanels>
@@ -22,6 +24,9 @@ function App() {
           </TabPanel>
           <TabPanel>
             <AutoDemo />
+          </TabPanel>
+          <TabPanel>
+            <PagedDemo />
           </TabPanel>
         </TabPanels>
       </Tabs>

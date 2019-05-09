@@ -5,6 +5,7 @@ export default () => {
   return (
     <DataTable
       selectable
+      idAttribute="id"
       data={[
         {
           id: 1,
@@ -31,7 +32,6 @@ export default () => {
         { key: "birthday", type: "timeago" },
         { key: "wfh", type: "checkbox" }
       ]}
-      idAttribute="id"
     />
   );
 };
