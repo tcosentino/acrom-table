@@ -33,11 +33,9 @@ class AutoDataTable extends Component {
     });
 
     // go through string columns to check for certain conditions
-    console.log({ columns });
     columns
       .filter(c => !c.type)
       .forEach(column => {
-        console.log({ column });
         let allBoolStrings = true;
 
         data.forEach(row => {
@@ -45,7 +43,6 @@ class AutoDataTable extends Component {
             ? ""
             : row[column.key].toString();
 
-          console.log(val);
           if (val !== "true" && val !== "false") {
             allBoolStrings = false;
           }

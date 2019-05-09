@@ -33,8 +33,6 @@ class DataTable extends Component {
     const { toggledList } = this.state;
     const idValue = this.getIdValue(original);
 
-    console.log(toggledList);
-
     return toggledList.indexOf(idValue) > -1;
   };
 
@@ -66,7 +64,6 @@ class DataTable extends Component {
   toggleSelectAll = () => {
     const { data } = this.props;
     const { selectAll } = this.state;
-    console.log({ data, selectAll });
     const newToggledList = selectAll === 1 ? [] : data.map(this.getIdValue);
 
     this.setState({
@@ -112,8 +109,6 @@ class DataTable extends Component {
     const { selectAll } = this.state;
     const returnColumns = [];
 
-    console.log({ selectAll });
-
     if (selectable) {
       returnColumns.push(this.getSelectableColumn());
     }
@@ -142,7 +137,7 @@ class DataTable extends Component {
   }
 
   render() {
-    const { filterable, toolbar } = this.props;
+    const { filterable, toolbar, ...tableProps } = this.props;
     const { toggledList, showFilters } = this.state;
 
     return (
@@ -167,6 +162,7 @@ class DataTable extends Component {
           {toolbar}
         </div>
         <ReactTable
+          {...tableProps}
           className="-striped -highlight"
           style={{
             // 30px is the height of the toolbar
@@ -175,6 +171,24 @@ class DataTable extends Component {
           data={this.props.data}
           columns={this.getColumns()}
           filterable={showFilters}
+          defaultFilterMethod={(filter, row) => {
+            // date filter
+            if (filter.value && (filter.value.to || filter.value.from)) {
+              if (filter.value.to && !filter.value.from) {
+                return filter.value.to > row[filter.id];
+              }
+              if (filter.value.from && !filter.value.to) {
+                return filter.value.from < row[filter.id];
+              }
+              return (
+                filter.value.to > row[filter.id] &&
+                filter.value.from < row[filter.id]
+              );
+            }
+
+            // normal filter
+            return String(row[filter.id]) === filter.value;
+          }}
         />
       </div>
     );

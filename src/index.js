@@ -22,7 +22,7 @@ function App() {
         <TabList>
           <Tab>Basic</Tab>
           <Tab>Auto</Tab>
-          <Tab>Paged</Tab>
+          <Tab>Server Paging</Tab>
         </TabList>
 
         <TabPanels>
