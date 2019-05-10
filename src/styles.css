@@ -63,3 +63,21 @@ body,
 .ReactTable .grid-header-cell .date-filter input {
   height: 20px;
 }
+
+.ReactTable .rt-table {
+  overflow: hidden;
+}
+
+.ReactTable .rt-thead {
+  min-width: auto !important;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.ReactTable .rt-tbody {
+  min-width: auto !important;
+}
+
+.ReactTable .rt-tr-group {
+  width: fit-content;
+}

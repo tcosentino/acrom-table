@@ -3,7 +3,6 @@ import reject from "lodash/reject";
 import ReactTable from "react-table";
 import { Icon } from "acromyrmex";
 import { Button } from "react-bootstrap";
-import "react-table/react-table.css";
 import {
   getLabelCell,
   getTimeagoCell,
@@ -22,6 +21,8 @@ class DataTable extends Component {
 
     showFilters: false
   };
+
+  wrapperRef = React.createRef();
 
   getIdValue = original => {
     const { idAttribute } = this.props;
@@ -141,7 +142,7 @@ class DataTable extends Component {
     const { toggledList, showFilters } = this.state;
 
     return (
-      <div style={{ height: "100%" }}>
+      <div style={{ height: "100%" }} ref={this.wrapperRef}>
         <div className="toolbar clearfix">
           <div className="pull-right">
             <strong>{`${toggledList.length} Selected`}</strong>
@@ -189,10 +190,35 @@ class DataTable extends Component {
             // normal filter
             return String(row[filter.id]) === filter.value;
           }}
+          getTbodyProps={() => ({
+            onScroll: e => {
+              let headers = this.wrapperRef.current.getElementsByClassName(
+                "rt-thead"
+              );
+              console.log(e.target.scrollLeft);
+              console.log(headers);
+              for (let i = 0; i < headers.length; i++) {
+                headers[i].scrollLeft = e.target.scrollLeft;
+              }
+            }
+          })}
+          getTheadThProps={() => ({
+            style: {}
+          })}
+          // this helps fix horizontal scrolling
+          // TbodyComponent={TbodyComponent}
+          // TrGroupComponent={TrGroupComponent}
         />
       </div>
     );
   }
 }
+// handleScroll(event) {
+//   console.log(event.target.scrollLeft);
+//   let headers = document.getElementsByClassName("rt-thead");
+//   for (let i = 0; i < headers.length; i++) {
+//     headers[i].scrollLeft = event.target.scrollLeft;
+//   }
+// }
 
 export default DataTable;

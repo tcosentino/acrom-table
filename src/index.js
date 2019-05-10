@@ -6,6 +6,7 @@ import "normalize-scss/sass/_normalize.scss";
 import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/scss/font-awesome.scss";
 import "@reach/tabs/styles.css";
+import "react-table/react-table.css";
 
 import "./styles.css";
 import BasicDemo from "./Demo/BasicDemo";
