@@ -13,17 +13,6 @@ body,
   overflow: hidden;
 }
 
-.toolbar {
-  height: 30px;
-  line-height: 24px;
-  padding: 3px;
-  width: 100%;
-}
-
-.toolbar > div {
-  margin-right: 5px;
-}
-
 .header {
   flex: 0 0 auto;
   background-color: rgb(27, 31, 33);
@@ -58,40 +47,4 @@ body,
 [data-reach-tab-panels] {
   flex: 1;
   overflow-y: auto;
-}
-
-/* .ReactTable .rt-thead .grid-header-cell,
-.ReactTable .rt-thead.-filters .grid-header-cell {
-  border-color: $background-color;
-}
-
-.ReactTable .rt-thead .grid-header-cell input,
-.ReactTable .rt-thead.-filters .grid-header-cell input {
-  color: $text-color;
-} */
-
-.ReactTable .grid-header-cell [class^="col-"] {
-  padding: 0;
-}
-
-.ReactTable .grid-header-cell .date-filter input {
-  height: 20px;
-}
-
-.ReactTable .rt-table {
-  overflow: hidden;
-}
-
-.ReactTable .rt-thead {
-  min-width: auto !important;
-  overflow-x: hidden;
-  overflow-y: scroll;
-}
-
-.ReactTable .rt-tbody {
-  min-width: auto !important;
-}
-
-.ReactTable .rt-tr-group {
-  width: fit-content;
 }

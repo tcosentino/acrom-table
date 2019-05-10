@@ -11,6 +11,8 @@ import {
   getPercentCell,
   getCellBase
 } from "./DataTableCells";
+import "react-table/react-table.css";
+import "./DataTable.css";
 
 class DataTable extends Component {
   state = {

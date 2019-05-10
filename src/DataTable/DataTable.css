@@ -1,0 +1,40 @@
+.toolbar {
+  height: 30px;
+  line-height: 24px;
+  padding: 3px;
+  width: 100%;
+}
+
+.toolbar > div {
+  margin-right: 5px;
+}
+
+.ReactTable .rt-th [class^="col-"] {
+  padding: 0;
+}
+
+.ReactTable .rt-th .date-filter input {
+  height: 20px;
+}
+
+.ReactTable .rt-th .date-filter .form-group {
+  margin-bottom: 5px;
+}
+
+.ReactTable .rt-table {
+  overflow: hidden;
+}
+
+.ReactTable .rt-thead {
+  min-width: auto !important;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.ReactTable .rt-tbody {
+  min-width: auto !important;
+}
+
+.ReactTable .rt-tr-group {
+  width: fit-content;
+}

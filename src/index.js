@@ -6,12 +6,13 @@ import "normalize-scss/sass/_normalize.scss";
 import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/scss/font-awesome.scss";
 import "@reach/tabs/styles.css";
-import "react-table/react-table.css";
-
 import "./styles.css";
+
 import BasicDemo from "./Demo/BasicDemo";
 import AutoDemo from "./Demo/AutoDemo";
 import PagedDemo from "./Demo/PagedDemo";
+
+import "./Demo/styles.css";
 
 function App() {
   return (
