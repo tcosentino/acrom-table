@@ -24,6 +24,18 @@ class DataTable extends Component {
     showFilters: false
   };
 
+  componentDidUpdate() {
+    const { scrollLeft } = this.state;
+    const { current: wrapper } = this.wrapperRef;
+    let headers = wrapper.getElementsByClassName("rt-thead");
+
+    console.log(scrollLeft);
+    console.log(headers);
+    for (let i = 0; i < headers.length; i++) {
+      headers[i].scrollLeft = scrollLeft;
+    }
+  }
+
   wrapperRef = React.createRef();
 
   getIdValue = original => {
@@ -194,14 +206,7 @@ class DataTable extends Component {
           }}
           getTbodyProps={() => ({
             onScroll: e => {
-              let headers = this.wrapperRef.current.getElementsByClassName(
-                "rt-thead"
-              );
-              console.log(e.target.scrollLeft);
-              console.log(headers);
-              for (let i = 0; i < headers.length; i++) {
-                headers[i].scrollLeft = e.target.scrollLeft;
-              }
+              this.setState({ scrollLeft: e.target.scrollLeft });
             }
           })}
           getTheadThProps={() => ({
