@@ -1,4 +1,6 @@
-export default [
+import orderBy from "lodash/orderBy";
+import _filter from "lodash/filter";
+const demoData = [
   {
     id: 1,
     name: "Kylan",
@@ -800,3 +802,60 @@ export default [
     wfh: "true"
   }
 ];
+
+const _filterData = (data, filter = {}) => {
+  let returnData = data;
+
+  console.log({ filter });
+  if (Object.keys(filter).length) {
+    returnData = _filter(data, filter);
+  }
+
+  return returnData;
+};
+
+const requestData = (pageSize, page, sort, filter) => {
+  return new Promise((resolve, reject) => {
+    // You can retrieve your data however you want, in this case, we will just use some local data.
+    let filteredData = demoData;
+
+    // You can use the filters in your request, but you are responsible for applying them.
+    filteredData = _filterData(filteredData, filter);
+
+    // You can also use the sorting in your request, but again, you are responsible for applying it.
+    const sortedData =
+      !sort || !sort.length
+        ? filteredData
+        : orderBy(
+            filteredData,
+            sort[0] === "-" ? sort.substring(1) : sort,
+            sort[0] === "-" ? "desc" : "asc"
+          );
+    console.log({ pageSize, page });
+
+    // You must return an object containing the rows of the current page, and optionally the total pages number.
+    const res = {
+      data: sortedData.slice(
+        pageSize * (page - 1),
+        pageSize * (page - 1) + pageSize
+      ),
+      totalItemCount: filteredData.length,
+      totalIdList: getIdList(filter)
+    };
+
+    // Here we'll simulate a server response with 500ms of delay.
+    setTimeout(() => resolve(res), 500);
+  });
+};
+
+const getIdList = filter => {
+  // You can retrieve your data however you want, in this case, we will just use some local data.
+  let filteredData = demoData;
+
+  // You can use the filters in your request, but you are responsible for applying them.
+  filteredData = _filterData(filteredData, filter);
+
+  return filteredData.map(d => d.id);
+};
+
+export { requestData, demoData };

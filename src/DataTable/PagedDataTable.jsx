@@ -12,7 +12,7 @@ class PagedDataTable extends Component {
         columns={columns}
         onFetchData={tableState => {
           console.log("onFetchData");
-          const { page, pageSize, sorted, filtered } = tableState;
+          const { page, pageSize, sorted, filter } = tableState;
           const computedState = {
             currentPage: page + 1,
             pageSize: pageSize
@@ -24,12 +24,7 @@ class PagedDataTable extends Component {
             computedState.sort = sorted[0].id;
           }
 
-          if (filtered) {
-            computedState.filter = {};
-            filtered.forEach(f => {
-              computedState.filter[f.id] = f.value;
-            });
-          }
+          computedState.filter = filter;
 
           return onFetchData(computedState);
         }}
