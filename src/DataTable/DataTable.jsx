@@ -32,6 +32,11 @@ class DataTable extends Component {
     // this is the format that the table uses
     filtered: [],
 
+    columnShowList: this.props.columns.map(c => ({
+      key: c.key,
+      hidden: c.hidden
+    })),
+
     showFilters: false
   };
 
@@ -174,7 +179,12 @@ class DataTable extends Component {
 
     returnColumns.push(
       ...columns
-        .filter(c => !c.hidden)
+        .filter(c => {
+          const { columnShowList } = this.state;
+          const thisCol = columnShowList.find(col => c.key === col.key);
+
+          return !thisCol.hidden;
+        })
         .map(column => {
           const cell = getCellBase(column);
 
@@ -242,11 +252,26 @@ class DataTable extends Component {
 
     return (
       <Popover id="popover-basic">
-        {columns.map(column => (
-          <Checkbox checked={!column.hidden}>
-            {column.display || column.key}
-          </Checkbox>
-        ))}
+        {columns.map(column => {
+          const { columnShowList } = this.state;
+          const thisCol = columnShowList.find(col => column.key === col.key);
+
+          return (
+            <Checkbox
+              checked={!thisCol.hidden}
+              onClick={() => {
+                const { columnShowList } = this.state;
+                const newColList = [...columnShowList];
+                const thisCol = newColList.find(col => column.key === col.key);
+
+                thisCol.hidden = !thisCol.hidden;
+                this.setState({ columnShowList: newColList });
+              }}
+            >
+              {column.display || column.key}
+            </Checkbox>
+          );
+        })}
       </Popover>
     );
   }
