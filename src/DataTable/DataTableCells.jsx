@@ -81,31 +81,37 @@ const getTimeagoCell = (column, cell) => ({
     },
     onChange
   }) => (
-    <div className="date-filter">
-      <DateInput
-        label="From"
-        input={{
-          value: filter.value.from,
-          onChange: value => {
-            onChange({ ...filter.value, from: value });
-          }
-        }}
-        dateFormat="L"
-        dateTimeFormat="L LT"
-        meta={{}}
-      />
-      <DateInput
-        label="To"
-        input={{
-          value: filter.value.to,
-          onChange: value => {
-            onChange({ ...filter.value, to: value });
-          }
-        }}
-        dateFormat="L"
-        dateTimeFormat="L LT"
-        meta={{}}
-      />
+    <div className="date-filter form-inline">
+      <div>
+        <DateInput
+          label="From"
+          stripped
+          input={{
+            value: filter.value.from,
+            onChange: value => {
+              onChange({ ...filter.value, from: value });
+            }
+          }}
+          dateFormat="L"
+          dateTimeFormat="L LT"
+          meta={{}}
+        />
+      </div>
+      <div>
+        <DateInput
+          label="To"
+          stripped
+          input={{
+            value: filter.value.to,
+            onChange: value => {
+              onChange({ ...filter.value, to: value });
+            }
+          }}
+          dateFormat="L"
+          dateTimeFormat="L LT"
+          meta={{}}
+        />
+      </div>
     </div>
   )
 });

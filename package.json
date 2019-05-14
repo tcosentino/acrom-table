@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "dependencies": {
     "@reach/tabs": "0.1.5",
-    "acromyrmex": "1.0.57",
+    "acromyrmex": "1.0.59",
     "lodash": "4.17.11",
     "moment": "2.24.0",
     "react": "16.8.6",
