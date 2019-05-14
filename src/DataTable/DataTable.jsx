@@ -25,6 +25,7 @@ class DataTable extends Component {
     // toggled list because when select all is enabled, it is the unselected rows
     toggledList: [],
     pageSize: 20,
+    filter: {},
 
     showFilters: false
   };
@@ -216,7 +217,7 @@ class DataTable extends Component {
       onFetchData,
       ...tableProps
     } = this.props;
-    const { toggledList, showFilters, pageSize } = this.state;
+    const { toggledList, showFilters, pageSize, filter } = this.state;
     const addedProps = {};
 
     if (totalCount !== null) {
@@ -242,6 +243,18 @@ class DataTable extends Component {
               </Button>
             </div>
           )}
+          {Object.keys(filter).length > 0 && (
+            <div className="pull-left">
+              <Button
+                bsStyle="danger"
+                bsSize="xs"
+                onClick={() => this.setState({ showFilters: !showFilters })}
+              >
+                <Icon filter />
+                {" Clear Filter"}
+              </Button>
+            </div>
+          )}
           {toolbar}
         </div>
         <ReactTable
@@ -257,7 +270,7 @@ class DataTable extends Component {
           data={data}
           columns={this.getColumns()}
           pageSizeOptions={this.getPageSizeOptions()}
-          filterable={showFilters}
+          filterable={filterable}
           onFetchData={tableState => {
             const { filtered } = tableState;
 
@@ -300,17 +313,16 @@ class DataTable extends Component {
               this.setState({ scrollLeft: e.target.scrollLeft });
             }
           })}
+          getTheadFilterProps={(state, rowInfo, column, instance) => {
+            console.log({ state, showFilters });
+            return {
+              style: showFilters ? null : { display: "none" }
+            };
+          }}
         />
       </div>
     );
   }
 }
-// handleScroll(event) {
-//   console.log(event.target.scrollLeft);
-//   let headers = document.getElementsByClassName("rt-thead");
-//   for (let i = 0; i < headers.length; i++) {
-//     headers[i].scrollLeft = event.target.scrollLeft;
-//   }
-// }
 
 export default DataTable;
