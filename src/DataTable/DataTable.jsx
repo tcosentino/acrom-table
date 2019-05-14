@@ -27,7 +27,10 @@ class DataTable extends Component {
     // toggled list because when select all is enabled, it is the unselected rows
     toggledList: [],
     pageSize: 20,
+    // this is the format we use
     filter: {},
+    // this is the format that the table uses
+    filtered: [],
 
     showFilters: false
   };
@@ -258,7 +261,7 @@ class DataTable extends Component {
       onFetchData,
       ...tableProps
     } = this.props;
-    const { toggledList, showFilters, pageSize, filter } = this.state;
+    const { toggledList, showFilters, pageSize, filter, filtered } = this.state;
     const addedProps = {};
 
     if (totalCount !== null) {
@@ -300,7 +303,7 @@ class DataTable extends Component {
               <Button
                 bsStyle="danger"
                 bsSize="xs"
-                onClick={() => this.setState({ showFilters: !showFilters })}
+                onClick={() => this.setState({ filtered: [] })}
               >
                 <Icon filter />
                 {" Clear Filter"}
@@ -323,6 +326,10 @@ class DataTable extends Component {
           columns={this.getColumns()}
           pageSizeOptions={this.getPageSizeOptions()}
           filterable={filterable}
+          filtered={filtered}
+          onFilteredChange={filtered => {
+            this.setState({ filtered });
+          }}
           onFetchData={tableState => {
             const { filtered } = tableState;
 
