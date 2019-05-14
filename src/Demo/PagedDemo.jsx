@@ -35,8 +35,16 @@ class PagedDemo extends Component {
         idAttribute="id"
         data={data}
         totalIdList={totalIdList}
+        actions={[
+          {
+            display: "Action",
+            onClick: selected => {
+              console.log({ selected });
+            }
+          }
+        ]}
         columns={[
-          { key: "id" },
+          { key: "id", hidden: true },
           { key: "name" },
           { key: "job" },
           { key: "mathGrade", type: "percent" },

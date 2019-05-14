@@ -16,7 +16,8 @@ import "./DataTable.css";
 
 class DataTable extends Component {
   static defaultProps = {
-    totalCount: null
+    totalCount: null,
+    actions: []
   };
 
   state = {
@@ -37,14 +38,11 @@ class DataTable extends Component {
     const { data, totalCount } = this.props;
     const { toggledList } = this.state;
 
-    console.log({ prevState, state: this.state });
-
     if (
       data.length !== prevProps.data.length ||
       totalCount !== prevProps.totalCount ||
       toggledList.length !== (prevState.toggledList || []).length
     ) {
-      console.log({ toggledList, data, totalCount });
       this.setState({
         selectAll: this.determineSelectAll()
       });
@@ -169,23 +167,25 @@ class DataTable extends Component {
     }
 
     returnColumns.push(
-      ...columns.map(column => {
-        const cell = getCellBase(column);
+      ...columns
+        .filter(c => !c.hidden)
+        .map(column => {
+          const cell = getCellBase(column);
 
-        switch (column.type) {
-          case "json":
-            return getJsonCell(column, cell);
-          case "percent":
-            return getPercentCell(column, cell);
-          case "checkbox":
-            return getCheckboxCell(column, cell);
-          case "date":
-          case "timeago":
-            return getTimeagoCell(column, cell);
-          default:
-            return getLabelCell(column, cell);
-        }
-      })
+          switch (column.type) {
+            case "json":
+              return getJsonCell(column, cell);
+            case "percent":
+              return getPercentCell(column, cell);
+            case "checkbox":
+              return getCheckboxCell(column, cell);
+            case "date":
+            case "timeago":
+              return getTimeagoCell(column, cell);
+            default:
+              return getLabelCell(column, cell);
+          }
+        })
     );
 
     return returnColumns;
@@ -205,6 +205,30 @@ class DataTable extends Component {
     }
 
     return pageSizeOptions;
+  }
+
+  getToolbar() {
+    const { actions, toolbar } = this.props;
+    const { toggledList } = this.state;
+
+    return (
+      <div>
+        {actions.map(action => (
+          <div className="pull-left">
+            <Button
+              bsStyle="primary"
+              bsSize="xs"
+              onClick={() => {
+                action.onClick(toggledList);
+              }}
+            >
+              {action.display}
+            </Button>
+          </div>
+        ))}
+        {toolbar}
+      </div>
+    );
   }
 
   render() {
@@ -255,7 +279,7 @@ class DataTable extends Component {
               </Button>
             </div>
           )}
-          {toolbar}
+          {this.getToolbar()}
         </div>
         <ReactTable
           {...tableProps}
@@ -314,7 +338,6 @@ class DataTable extends Component {
             }
           })}
           getTheadFilterProps={(state, rowInfo, column, instance) => {
-            console.log({ state, showFilters });
             return {
               style: showFilters ? null : { display: "none" }
             };

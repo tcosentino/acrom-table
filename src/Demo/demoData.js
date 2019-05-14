@@ -806,7 +806,6 @@ const demoData = [
 const _filterData = (data, filter = {}) => {
   let returnData = data;
 
-  console.log({ filter });
   if (Object.keys(filter).length) {
     returnData = _filter(data, filter);
   }
@@ -831,7 +830,6 @@ const requestData = (pageSize, page, sort, filter) => {
             sort[0] === "-" ? sort.substring(1) : sort,
             sort[0] === "-" ? "desc" : "asc"
           );
-    console.log({ pageSize, page });
 
     // You must return an object containing the rows of the current page, and optionally the total pages number.
     const res = {
