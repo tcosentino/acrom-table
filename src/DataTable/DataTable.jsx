@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import reject from "lodash/reject";
+import without from "lodash/without";
 import ReactTable from "react-table";
 import { Icon } from "acromyrmex";
-import { Button } from "react-bootstrap";
+import { Button, OverlayTrigger, Popover, Checkbox } from "react-bootstrap";
 import {
   getLabelCell,
   getTimeagoCell,
@@ -110,11 +111,12 @@ class DataTable extends Component {
 
   toggleSelectAll = () => {
     const { data, totalIdList, manual } = this.props;
-    const { selectAll, filter } = this.state;
+    const { selectAll, toggledList } = this.state;
 
     let newToggledList;
     if (manual) {
-      newToggledList = totalIdList;
+      newToggledList =
+        selectAll === 1 ? without(toggledList, ...totalIdList) : totalIdList;
     } else {
       newToggledList = selectAll === 1 ? [] : data.map(this.getIdValue);
     }
@@ -132,6 +134,7 @@ class DataTable extends Component {
       accessor: "",
       sortable: false,
       filterable: false,
+      toggleable: false,
       Cell: ({ original }) => (
         <input
           type="checkbox"
@@ -231,6 +234,20 @@ class DataTable extends Component {
     );
   }
 
+  getColumnPopover() {
+    const columns = this.props.columns;
+
+    return (
+      <Popover id="popover-basic">
+        {columns.map(column => (
+          <Checkbox checked={!column.hidden}>
+            {column.display || column.key}
+          </Checkbox>
+        ))}
+      </Popover>
+    );
+  }
+
   render() {
     const {
       data,
@@ -253,6 +270,17 @@ class DataTable extends Component {
         <div className="toolbar clearfix">
           <div className="pull-right">
             <strong>{`${toggledList.length} Selected`}</strong>
+          </div>
+          <div className="pull-left">
+            <OverlayTrigger
+              trigger="click"
+              placement="bottom"
+              overlay={this.getColumnPopover()}
+            >
+              <Button bsStyle="primary" bsSize="xs">
+                Toggle Columns
+              </Button>
+            </OverlayTrigger>
           </div>
           {filterable && (
             <div className="pull-left">

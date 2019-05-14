@@ -9,7 +9,8 @@ import { toBoolean } from "./DataConversion";
 const getCellBase = column => ({
   Header: column.display || column.key,
   accessor: column.key,
-  width: column.width || 150
+  width: column.width || 150,
+  toggleable: true
 });
 
 const cellFactory = func => {
