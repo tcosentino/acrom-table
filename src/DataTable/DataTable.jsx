@@ -232,7 +232,7 @@ class DataTable extends Component {
         {actions.map(action => (
           <div className="pull-left">
             <Button
-              bsStyle="primary"
+              bsStyle={action.style || "success"}
               bsSize="xs"
               onClick={() => {
                 action.onClick(toggledList);
